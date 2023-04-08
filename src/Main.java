@@ -35,9 +35,14 @@ public class Main {
 
         String referencias = "";
 
-        int tamanoFila = numeroColumnas * tamanoEntero; // 2*4 = 8
-        int filasEnUnaPagina = tamanoPagina / tamanoFila; // 10 / 8 = 1 
+        int tamanoFila = numeroColumnas * tamanoEntero; // 8*4 = 32
+        int filasEnUnaPagina = tamanoPagina / tamanoFila; // 512 / 32 = 1 
+
         int numeroPaginasNecesariasPorMatriz = numeroFilas / filasEnUnaPagina; // 2 / 1 = 2
+        if (filasEnUnaPagina > numeroFilas) {
+            numeroPaginasNecesariasPorMatriz = 1;
+        }
+
 
         int filaActual = 0;
         for (int i = 0; i < numeroPaginasNecesariasPorMatriz; i++) {

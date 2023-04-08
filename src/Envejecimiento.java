@@ -19,7 +19,7 @@ public class Envejecimiento extends Thread{
                 e.printStackTrace();
             }
             tablaTiempo.avanzarTiempo();
-            tablaTiempo.imprimirTablaTiempo();
+            //tablaTiempo.imprimirTablaTiempo();
         }
     }
 

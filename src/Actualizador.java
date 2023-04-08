@@ -52,7 +52,8 @@ public class Actualizador extends Thread {
                 //System.out.println("");
                 //System.out.println("Ref: " + referencia + " Fallos: " + numeroFallos );
                 //imprimirMarcosPagina();
-                //tablaTiempo.imprimirTablaTiempo();
+                tablaTiempo.imprimirTablaTiempo();
+                System.out.println("");
             }
 
 
