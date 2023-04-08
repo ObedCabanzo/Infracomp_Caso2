@@ -18,10 +18,14 @@ public class Main {
     private static int tamanoEntero = 0;
 
     public static TablaPaginas tablaPaginas;
+    public static TablaTiempo tablaTiempo;
+    public static int[] marcosPagina;
 
 
     public static void main(String[] args) {
         String referencias = mode1();
+        mode2(referencias);
+
 
     }
 
@@ -64,14 +68,27 @@ public class Main {
         }
         
         tablaPaginas = new TablaPaginas(numeroPaginasNecesariasPorMatriz * 3);
+        
+
         String resultadoFinal = resultado + referencias;
         escribirOutput("src/output/output.txt", resultadoFinal);
         return resultadoFinal;
         
     }
 
-    public static void mode2() {
-        System.out.println("Mode 2");
+    public static void mode2(String referencias) {
+
+        tablaTiempo = new TablaTiempo(numeroPaginas);
+        marcosPagina = new int[numeroPaginas];
+        for (int i = 0; i < numeroPaginas; i++) {
+            marcosPagina[i] = -1;
+        }
+
+        Envejecimiento envejecimiento = new Envejecimiento(tablaTiempo);
+        //envejecimiento.start();
+        Actualizador actualizador = new Actualizador(tablaPaginas, tablaTiempo, referencias, marcosPagina);
+        actualizador.start();
+
     }
 
     public static String leerInput(String rutaArchivo) {

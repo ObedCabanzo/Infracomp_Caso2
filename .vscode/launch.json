@@ -6,6 +6,13 @@
     "configurations": [
         {
             "type": "java",
+            "name": "TablaTiempo",
+            "request": "launch",
+            "mainClass": "src.TablaTiempo",
+            "projectName": "Infracomp_Caso2_bb0d39e0"
+        },
+        {
+            "type": "java",
             "name": "Current File",
             "request": "launch",
             "mainClass": "${file}"

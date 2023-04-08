@@ -41,5 +41,20 @@ public class TablaPaginas {
         }
     }
 
+    public Boolean estaEnMemoria(int indice){
+        synchronized(this){
+            if (paginas[indice] == -1){
+                return false;
+            }
+            else{
+                return true;
+            }
+        }
+    }
     
+    public void imprimirTablaPaginas(){
+        for (int i = 0; i < numeroPaginas; i++) {
+            System.out.println("Pagina " + i + " : " + paginas[i]);
+        }
+    }
 }
