@@ -3,13 +3,17 @@ package src;
 public class Envejecimiento extends Thread{
 
     public static TablaTiempo tablaTiempo;
+    public static MarcosPagina marcosPagina;
     
-    public Envejecimiento(TablaTiempo tablaTiempo){
+    public Envejecimiento(TablaTiempo tablaTiempo, MarcosPagina marcosPagina){
+        Envejecimiento.marcosPagina = marcosPagina;
         Envejecimiento.tablaTiempo = tablaTiempo;
     }
         
     
     public void run (){
+
+        MarcosPagina marcosCopia = marcosPagina;
 
         while (true){
             try {
@@ -18,10 +22,15 @@ public class Envejecimiento extends Thread{
                 // TODO Auto-generated catch block
                 e.printStackTrace();
             }
-            tablaTiempo.avanzarTiempo();
-            //tablaTiempo.imprimirTablaTiempo();
+            int cambios = marcosPagina.compararCambios(marcosCopia);
+            if (cambios == -1 ){
+                marcosCopia = marcosPagina;
+                tablaTiempo.actualizarTiempo(cambios);
+            }
         }
     }
+
+   
 
 
     

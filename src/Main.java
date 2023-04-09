@@ -19,7 +19,7 @@ public class Main {
 
     public static TablaPaginas tablaPaginas;
     public static TablaTiempo tablaTiempo;
-    public static int[] marcosPagina;
+    public static MarcosPagina marcosPagina;
 
 
     public static void main(String[] args) {
@@ -41,6 +41,7 @@ public class Main {
         int numeroPaginasNecesariasPorMatriz = numeroFilas / filasEnUnaPagina; // 2 / 1 = 2
         if (filasEnUnaPagina > numeroFilas) {
             numeroPaginasNecesariasPorMatriz = 1;
+            filasEnUnaPagina = numeroFilas;
         }
 
 
@@ -84,12 +85,11 @@ public class Main {
     public static void mode2(String referencias) {
 
         tablaTiempo = new TablaTiempo(numeroPaginas);
-        marcosPagina = new int[numeroPaginas];
-        for (int i = 0; i < numeroPaginas; i++) {
-            marcosPagina[i] = -1;
-        }
+        marcosPagina = new MarcosPagina(numeroPaginas);
 
-        Envejecimiento envejecimiento = new Envejecimiento(tablaTiempo);
+
+
+        Envejecimiento envejecimiento = new Envejecimiento(tablaTiempo, marcosPagina);
         //envejecimiento.start();
         Actualizador actualizador = new Actualizador(tablaPaginas, tablaTiempo, referencias, marcosPagina);
         actualizador.start();

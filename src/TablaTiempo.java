@@ -44,7 +44,7 @@ public class TablaTiempo {
 
     public void actualizarTiempo (int indice){
         synchronized(this){
-            tiempoPaginas[indice] = añadirCeroUno(tiempoPaginas[indice], "1");
+            
             for (int i = 0; i < numeroPaginas; i++) {
                 if (i != indice){
                     tiempoPaginas[i] = añadirCeroUno(tiempoPaginas[i], "0");
