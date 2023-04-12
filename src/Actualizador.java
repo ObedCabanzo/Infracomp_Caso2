@@ -70,8 +70,8 @@ public class Actualizador extends Thread {
         DecimalFormat df = new DecimalFormat("#.##");
         String resultado = df.format(seconds);
 
-        System.out.println("Tiempo total de ejecución: " + resultado + " segundos");
-        System.out.println("Numero de fallos: " + numeroFallos);
+        System.out.println("\nTiempo total de ejecución: " + resultado + " segundos");
+        System.out.println("Numero de fallos: " + numeroFallos + "\n");
         System.exit(0);
         
     }

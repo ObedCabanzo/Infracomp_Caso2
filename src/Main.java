@@ -6,6 +6,7 @@ import java.util.Scanner;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.Scanner;
 
 
 
@@ -23,7 +24,22 @@ public class Main {
 
 
     public static void main(String[] args) {
+
+        
+
         String referencias = mode1();
+        
+
+        System.out.println("Parametros: \n");
+        System.out.println("Numero de filas: " + numeroFilas);
+        System.out.println("Numero de columnas: " + numeroColumnas);
+        System.out.println("Tamano de pagina: " + tamanoPagina);
+        System.out.println("Numero de paginas: " + numeroPaginas);
+        System.out.println("Tamano de entero: " + tamanoEntero + "\n");
+        
+        
+        
+        System.out.println("Ejecutando modo 2... ");
         mode2(referencias);
 
 
@@ -31,8 +47,19 @@ public class Main {
 
     public static String  mode1() {
 
-        String resultado = leerInput("src/input/input.txt");
+        System.out.println("\n Ejecutando modo 1... \n ");
 
+        String ruta = "";
+        try (Scanner scanner = new Scanner(System.in)) {
+            System.out.println("Ingresa tu la ruta o el nombre del archivo input: ");
+            ruta = scanner.nextLine();
+            scanner.close();
+        }
+        
+        //src/input/input.txt
+        
+        String resultado = leerInput(ruta);
+        
         String referencias = "";
 
         int tamanoFila = numeroColumnas * tamanoEntero; // 8*4 = 32 Bytes por fila
@@ -83,6 +110,13 @@ public class Main {
         String resultadoFinal = resultado + referencias;
 
         escribirOutput("src/output/output.txt", resultadoFinal);
+        
+        System.out.println("----------------------------------------------------------------------");
+        System.out.println("Referencias creadas en la siguiente ruta: src/output/output.txt ");
+        System.out.println("---------------------------------------------------------------------\n");
+
+
+
         return resultadoFinal;
         
     }
