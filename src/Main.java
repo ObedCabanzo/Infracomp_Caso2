@@ -21,39 +21,39 @@ public class Main {
     public static TablaTiempo tablaTiempo;
     public static MarcosPagina marcosPagina;
 
+    private static Scanner scanner;
+
 
     public static void main(String[] args) {
 
-        
+        scanner = new Scanner(System.in);
+        int modo = -1;
 
-        String referencias = mode1();
+        System.out.println("\nIngresa tu la ruta del archivo input: \n");
+        String ruta = scanner.nextLine();
+        System.out.println("\n\nSeleccione el modo de ejecución: \n 1. Modo 1 \n 2. Modo 2 \n");
+        modo = scanner.nextInt();
+        scanner.close();
         
+        if (modo == 1) {
 
-        System.out.println("Parametros: \n");
-        System.out.println("Numero de filas: " + numeroFilas);
-        System.out.println("Numero de columnas: " + numeroColumnas);
-        System.out.println("Tamano de pagina: " + tamanoPagina);
-        System.out.println("Numero de paginas: " + numeroPaginas);
-        System.out.println("Tamano de entero: " + tamanoEntero + "\n");
-        
-        
-        
-        System.out.println("Ejecutando modo 2... ");
-        mode2(referencias);
+            mode1(ruta );
+
+        } else if (modo == 2) {
+
+            String referencias = mode1(ruta);
+            mode2(referencias);
+
+        } else {
+            System.out.println("Modo no válido");
+        }
 
 
     }
 
-    public static String  mode1() {
+    public static String  mode1(String ruta) {
 
-        System.out.println("\n Ejecutando modo 1... \n ");
-
-        String ruta = "";
-        try (Scanner scanner = new Scanner(System.in)) {
-            System.out.println("Ingresa tu la ruta o el nombre del archivo input: ");
-            ruta = scanner.nextLine();
-            scanner.close();
-        }
+        System.out.println("\nEjecutando modo 1... \n ");        
         
         //src/input/input.txt
         
@@ -114,6 +114,13 @@ public class Main {
         System.out.println("Referencias creadas en la siguiente ruta: src/output/output.txt ");
         System.out.println("---------------------------------------------------------------------\n");
 
+        System.out.println("Parametros: \n");
+        System.out.println("Numero de filas: " + numeroFilas);
+        System.out.println("Numero de columnas: " + numeroColumnas);
+        System.out.println("Tamano de pagina: " + tamanoPagina);
+        System.out.println("Numero de paginas: " + numeroPaginas);
+        System.out.println("Tamano de entero: " + tamanoEntero + "\n");
+
 
 
         return resultadoFinal;
@@ -121,6 +128,8 @@ public class Main {
     }
 
     public static void mode2(String referencias) {
+
+        System.out.println("Ejecutando modo 2... ");
 
         tablaTiempo = new TablaTiempo(numeroPaginas);
         marcosPagina = new MarcosPagina(numeroPaginas);
@@ -189,6 +198,7 @@ public class Main {
 
         } catch (FileNotFoundException e) {
             System.out.println("Archivo no encontrado: " + e.getMessage());
+            System.exit(0);
             return "";
         }
 
@@ -201,6 +211,7 @@ public class Main {
             writer.close();
         } catch (IOException e) {
             System.out.println("Error al escribir archivo: " + e.getMessage());
+            System.exit(0);
         }
     }
 }
