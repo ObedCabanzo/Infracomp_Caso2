@@ -26,10 +26,14 @@ public class Main {
 
     public static void main(String[] args) {
 
+        System.out.println("------------------------------");
+        System.out.println("SIMULADOR DE MEMORIA VIRTUAL ");
+        System.out.println("------------------------------\n");
+
         scanner = new Scanner(System.in);
         int modo = -1;
 
-        System.out.println("\nIngresa tu la ruta del archivo input: \n");
+        System.out.println("Ingresa la ruta del archivo input: \n(Ruta de archivo por defecto: src/input/input.txt)  \n");
         String ruta = scanner.nextLine();
         System.out.println("\n\nSeleccione el modo de ejecución: \n 1. Modo 1 \n 2. Modo 2 \n");
         modo = scanner.nextInt();
