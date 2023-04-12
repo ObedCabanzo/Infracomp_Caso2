@@ -35,23 +35,27 @@ public class Main {
 
         String referencias = "";
 
-        int tamanoFila = numeroColumnas * tamanoEntero; // 8*4 = 32
-        int filasEnUnaPagina = tamanoPagina / tamanoFila; // 512 / 32 = 1 
+        int tamanoFila = numeroColumnas * tamanoEntero; // 8*4 = 32 Bytes por fila
+        int filasEnUnaPagina = tamanoPagina / tamanoFila; // 256 / 32 = 8 filas por pagina
 
-        int numeroPaginasNecesariasPorMatriz = numeroFilas / filasEnUnaPagina; // 2 / 1 = 2
-        if (filasEnUnaPagina > numeroFilas) {
+        int numeroPaginasNecesariasPorMatriz = numeroFilas / filasEnUnaPagina; // 8 / 8 = 1 pagina por matriz
+
+        if (filasEnUnaPagina > numeroFilas) {      // 
             numeroPaginasNecesariasPorMatriz = 1;
             filasEnUnaPagina = numeroFilas;
         }
 
 
         int filaActual = 0;
-        for (int i = 0; i < numeroPaginasNecesariasPorMatriz; i++) {
+
+        for (int i = 0; i < numeroPaginasNecesariasPorMatriz ; i++) {
             int desplazamiento = 0;
+
             for (int j = 0; j < filasEnUnaPagina; j++) {
+
                 for (int k = 0; k < numeroColumnas; k++) {
 
-                
+    
                     String refA = i + "," + desplazamiento;
                     String refB = (i + numeroPaginasNecesariasPorMatriz) + "," + desplazamiento;
                     String refC = (i + 2*numeroPaginasNecesariasPorMatriz) + "," + desplazamiento;
@@ -77,6 +81,7 @@ public class Main {
         
 
         String resultadoFinal = resultado + referencias;
+
         escribirOutput("src/output/output.txt", resultadoFinal);
         return resultadoFinal;
         
@@ -89,8 +94,9 @@ public class Main {
 
 
 
-        Envejecimiento envejecimiento = new Envejecimiento(tablaTiempo, marcosPagina);
-        //envejecimiento.start();
+        Envejecimiento envejecimiento = new Envejecimiento(tablaTiempo);
+        envejecimiento.start();
+        
         Actualizador actualizador = new Actualizador(tablaPaginas, tablaTiempo, referencias, marcosPagina);
         actualizador.start();
 

@@ -1,4 +1,5 @@
 package src;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -25,6 +26,8 @@ public class Actualizador extends Thread {
 
     public void run(){
 
+        long startTime = System.currentTimeMillis();
+
         for (String referencia : listaReferencias) {
             try {
                 Thread.sleep(2);
@@ -32,11 +35,15 @@ public class Actualizador extends Thread {
                 // TODO Auto-generated catch block
                 e.printStackTrace();
             }
+
             String[] partes = referencia.split(",");
             int pagina = Integer.parseInt(partes[0]);
+
             
             if (!tablaPaginas.estaEnMemoria(pagina)){ // Revisa que la pagina que se esta solicitando no esté en memoria 
                 numeroFallos ++;  // Si no está, aumenta el numero de fallos  
+
+
                 int paginaMasVieja = tablaTiempo.darPaginaMasVieja(); // Busca la pagina que lleva mas tiempo en memoria
 
                 if (marcosPagina.darValorMarco(paginaMasVieja) != -1){  // Si la pagina que lleva mas tiempo en memoria no es -1, quiere decir que esta en memoria
@@ -46,21 +53,26 @@ public class Actualizador extends Thread {
                 }
 
                 tablaTiempo.actualizarTiempo(paginaMasVieja); // Se avanza el tiempo de todos los marcos añadiendo un 0, excepto el que se acaba de actualizar que se le añade un 1
+
                 marcosPagina.cambiarMarco( paginaMasVieja, pagina);; // Se actualiza el marco de pagina con el numero de pagina que esta en memoria
+
                 tablaPaginas.cambiarPagina(pagina, paginaMasVieja); // Se actualiza la pagina de la tabla de paginas con el numero de marco de pagina en memeoria en el que esta 
 
-                //System.out.println("");
-                //System.out.println("Ref: " + referencia + " Fallos: " + numeroFallos );
-                //imprimirMarcosPagina();
-                tablaTiempo.imprimirTablaTiempo();
-                System.out.println("");
             }
 
 
             
         }
+        long endTime = System.currentTimeMillis();
+        long totalTime = endTime - startTime ;
+        double seconds = (double)totalTime / 1000.0;
 
+        DecimalFormat df = new DecimalFormat("#.##");
+        String resultado = df.format(seconds);
+
+        System.out.println("Tiempo total de ejecución: " + resultado + " segundos");
         System.out.println("Numero de fallos: " + numeroFallos);
+        System.exit(0);
         
     }
 

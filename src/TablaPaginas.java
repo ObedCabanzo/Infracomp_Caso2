@@ -29,26 +29,21 @@ public class TablaPaginas {
         this.numeroPaginas = numeroPaginas;
     }
 
+    
     public void cambiarPagina( int indice , int numeroPagina){
-        synchronized(this){
-            paginas[indice] = numeroPagina;
-        }
+        paginas[indice] = numeroPagina;
     }
 
     public int darPaginaEnMemoria( int indice ){
-        synchronized(this){
-            return paginas[indice];
-        }
+        return paginas[indice];
     }
 
     public Boolean estaEnMemoria(int indice){
-        synchronized(this){
-            if (paginas[indice] == -1){
-                return false;
-            }
-            else{
-                return true;
-            }
+        if (paginas[indice] == -1){
+            return false;
+        }
+        else{
+            return true;
         }
     }
     

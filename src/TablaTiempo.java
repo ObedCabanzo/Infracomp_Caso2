@@ -4,12 +4,20 @@ public class TablaTiempo {
 
     private String[] tiempoPaginas;
     private int numeroPaginas;
+    private int[] edadPaginas;
+    private int contadorEdad = 0;
+    private int actualizacionPendiente = 0;
 
     public TablaTiempo( int numeroPaginas) {
         this.numeroPaginas = numeroPaginas;
         this.tiempoPaginas = new String[numeroPaginas];
         for (int i = 0; i < numeroPaginas; i++) {
             this.tiempoPaginas[i] = "00000000";
+        }
+        this.edadPaginas = new int[numeroPaginas];
+        for (int i = 0; i < numeroPaginas; i++) {
+            this.edadPaginas[i] = contadorEdad;
+            contadorEdad++;
         }
     }
 
@@ -34,42 +42,68 @@ public class TablaTiempo {
         this.numeroPaginas = numeroPaginas;
     }
 
-    public void avanzarTiempo (){
-        synchronized(this){
-            for (int i = 0; i < numeroPaginas; i++) {
-                tiempoPaginas[i] = añadirCeroUno(tiempoPaginas[i], "0");
+    public synchronized void avanzarTiempo (){
+
+        while (actualizacionPendiente == 0){
+            try {
+                wait();
+            } catch (InterruptedException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
             }
         }
-    }
 
-    public void actualizarTiempo (int indice){
-        synchronized(this){
+        for (int i = 0; i < numeroPaginas; i++) {
+            String tiempoPagina = tiempoPaginas[i];
             
-            for (int i = 0; i < numeroPaginas; i++) {
-                if (i != indice){
-                    tiempoPaginas[i] = añadirCeroUno(tiempoPaginas[i], "0");
-                }
-                else{
-                    tiempoPaginas[i] = añadirCeroUno(tiempoPaginas[i], "1");
-                }
+            String ultimaActualizacion = tiempoPagina.substring(0,1);  // primer caracter del tiempo de la pagina 
+
+            if (ultimaActualizacion.equals("1")){
+                edadPaginas[i] = contadorEdad;
+                contadorEdad++;
+            }
+
+            tiempoPaginas[i] = añadirCeroUno(tiempoPaginas[i], "0");
+            
+        }
+
+        actualizacionPendiente = 0;
+        notifyAll();
+    }
+    
+
+    
+
+    public synchronized void actualizarTiempo(int indice){
+        
+        while (actualizacionPendiente == 1){
+            try {
+                wait();
+            } catch (InterruptedException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
             }
         }
+        tiempoPaginas[indice] = añadirCeroUno(tiempoPaginas[indice], "1");
+        actualizacionPendiente = 1;
+        notifyAll();
+    
     }
 
 
-    public int darPaginaMasVieja (){
-        synchronized(this){
-            int indice = 0;
-            for (int i = 0; i < numeroPaginas; i++) {
-                if (tiempoPaginas[i].compareTo(tiempoPaginas[indice]) < 0){
-                    indice = i;
-                }
+
+    public synchronized int darPaginaMasVieja(){
+        
+        int indice = 0;
+        for (int i = 0; i < numeroPaginas; i++) {
+            if (edadPaginas[i] < edadPaginas[indice]){
+                indice = i;
             }
-
-            return indice;
         }
-    }
 
+        return indice;
+
+    }
   
 
     public String añadirCeroUno(String tiempo, String valor){
