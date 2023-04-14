@@ -4,8 +4,6 @@ public class TablaTiempo {
 
     private String[] tiempoPaginas;
     private int numeroPaginas;
-    private int[] edadPaginas;
-    private int contadorEdad = 0;
     private int actualizacionPendiente = 0;
 
     public TablaTiempo( int numeroPaginas) {
@@ -14,11 +12,7 @@ public class TablaTiempo {
         for (int i = 0; i < numeroPaginas; i++) {
             this.tiempoPaginas[i] = "00000000";
         }
-        this.edadPaginas = new int[numeroPaginas];
-        for (int i = 0; i < numeroPaginas; i++) {
-            this.edadPaginas[i] = contadorEdad;
-            contadorEdad++;
-        }
+
     }
 
     public String getTiempoPaginas() {
@@ -44,6 +38,7 @@ public class TablaTiempo {
 
     public synchronized void avanzarTiempo (){
 
+        
         while (actualizacionPendiente == 0){
             try {
                 wait();
@@ -52,19 +47,10 @@ public class TablaTiempo {
                 e.printStackTrace();
             }
         }
+        
 
         for (int i = 0; i < numeroPaginas; i++) {
-            String tiempoPagina = tiempoPaginas[i];
-            
-            String ultimaActualizacion = tiempoPagina.substring(0,1);  // primer caracter del tiempo de la pagina 
-
-            if (ultimaActualizacion.equals("1")){
-                edadPaginas[i] = contadorEdad;
-                contadorEdad++;
-            }
-
             tiempoPaginas[i] = añadirCeroUno(tiempoPaginas[i], "0");
-            
         }
 
         actualizacionPendiente = 0;
@@ -91,19 +77,22 @@ public class TablaTiempo {
     }
 
 
-
     public synchronized int darPaginaMasVieja(){
-        
+
         int indice = 0;
+        int tiempoMasViejo = 0;
+
         for (int i = 0; i < numeroPaginas; i++) {
-            if (edadPaginas[i] < edadPaginas[indice]){
+            if ( tiempoPaginas[i].compareTo(tiempoPaginas[indice]) < tiempoMasViejo){
                 indice = i;
+                tiempoMasViejo = tiempoPaginas[i].compareTo(tiempoPaginas[indice]);
             }
         }
 
-        return indice;
+        return indice ;
 
     }
+
   
 
     public String añadirCeroUno(String tiempo, String valor){
@@ -116,4 +105,4 @@ public class TablaTiempo {
         }
     }
     
-}
+}   

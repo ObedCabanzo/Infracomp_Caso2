@@ -3,8 +3,7 @@ package src;
 public class MarcosPagina {
     
 
-    public int[] marcos;
-    private int ocupado = 0;
+    public int[] marcos;    
     public MarcosPagina(int numeroMarcos){
         marcos = new int[numeroMarcos];
         for (int i = 0; i < numeroMarcos; i++) {

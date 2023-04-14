@@ -59,56 +59,139 @@ public class Main {
 
         System.out.println("\nEjecutando modo 1... \n ");        
         
-        //src/input/input.txt
-        
         String resultado = leerInput(ruta);
         
         String referencias = "";
+        
+        int numeroReferencias = 0;
 
-        int tamanoFila = numeroColumnas * tamanoEntero; // 8*4 = 32 Bytes por fila
-        int filasEnUnaPagina = tamanoPagina / tamanoFila; // 256 / 32 = 8 filas por pagina
+        /* 
+            Ejemplo: 
+                Tamaño de pagina:  256 Bytes
+                Tamaño de entero: 4 Bytes
+                Filas = 8
+                Columnas = 8
+        */
 
-        int numeroPaginasNecesariasPorMatriz = numeroFilas / filasEnUnaPagina; // 8 / 8 = 1 pagina por matriz
-
-        if (filasEnUnaPagina > numeroFilas) {      // 
-            numeroPaginasNecesariasPorMatriz = 1;
-            filasEnUnaPagina = numeroFilas;
-        }
+        // 8*4 = 32 Bytes por fila
+        int tamanoFila = numeroColumnas * tamanoEntero; 
+        // 256 / 32 = 8 filas por pagina
+        int filasEnUnaPagina = tamanoPagina / tamanoFila; 
+         // 8 / 8 = 1 pagina por matriz
+        int numeroPaginasNecesariasPorMatriz = numeroFilas / filasEnUnaPagina;
 
 
         int filaActual = 0;
 
-        for (int i = 0; i < numeroPaginasNecesariasPorMatriz ; i++) {
+
+        if (filasEnUnaPagina >= numeroFilas*3) {      // Cuando todas las matrices caben en una pagina 
+            filasEnUnaPagina = numeroFilas;
+
             int desplazamiento = 0;
 
-            for (int j = 0; j < filasEnUnaPagina; j++) {
+            for (int j = 0; j < numeroFilas; j++) {
 
                 for (int k = 0; k < numeroColumnas; k++) {
 
     
-                    String refA = i + "," + desplazamiento;
-                    String refB = (i + numeroPaginasNecesariasPorMatriz) + "," + desplazamiento;
-                    String refC = (i + 2*numeroPaginasNecesariasPorMatriz) + "," + desplazamiento;
+                    String refA =  "0" + "," + desplazamiento;
+                    String refB = "0" + "," + desplazamiento;
+                    String refC = "0" + "," + desplazamiento;
 
-                    String valor = "[A-" + filaActual + "-" + k + "]"  
+                    String valor = "[A-" + j + "-" + k + "]"  
                                         + "," + refA + "\n" 
-                                        + "[B-" + filaActual + "-" + k + "]"
+                                        + "[B-" + j + "-" + k + "]"
                                         + "," + refB + "\n" 
-                                        + "[C-" + filaActual + "-" + k + "]"
+                                        + "[C-" + j + "-" + k + "]"
                                         + "," + refC + "\n";
 
                     referencias += valor;
-
                     desplazamiento += tamanoEntero;
 
+                    numeroReferencias += 3;
+
                 }
-                filaActual++;
-                
+                filaActual++;   
             }
+
+            tablaPaginas = new TablaPaginas(2);
+            
         }
-        
-        tablaPaginas = new TablaPaginas(numeroPaginasNecesariasPorMatriz * 3);
-        
+
+        else if (filasEnUnaPagina >= numeroFilas*2) {      // Cuanto dos matrices caben en una pagina 
+            numeroPaginasNecesariasPorMatriz = 1;
+            filasEnUnaPagina = numeroFilas;
+
+            int desplazamiento = 0;
+            int paginaActual = 0;
+
+            for (int j = 0; j < numeroFilas; j++) {
+
+                for (int k = 0; k < numeroColumnas; k++) {
+
+    
+                    String refA = paginaActual + "," + desplazamiento;
+                    String refB = paginaActual + "," + desplazamiento;
+                    String refC = paginaActual + 1 + "," + desplazamiento;
+
+                    String valor = "[A-" + j + "-" + k + "]"  
+                                        + "," + refA + "\n" 
+                                        + "[B-" + j + "-" + k + "]"
+                                        + "," + refB + "\n" 
+                                        + "[C-" + j + "-" + k + "]"
+                                        + "," + refC + "\n";
+
+                    referencias += valor;
+                    desplazamiento += tamanoEntero;
+
+                    numeroReferencias += 3;
+
+                }
+                filaActual++;   
+            }
+
+            tablaPaginas = new TablaPaginas(2);
+
+        }
+
+        else {
+             
+                for (int i = 0; i < numeroPaginasNecesariasPorMatriz ; i++) {
+
+                    int desplazamiento = 0;
+
+                    for (int j = 0; j < filasEnUnaPagina; j++) {
+
+                        for (int k = 0; k < numeroColumnas; k++) {
+
+            
+                            String refA = i + "," + desplazamiento;
+                            String refB = (i + numeroPaginasNecesariasPorMatriz) + "," + desplazamiento;
+                            String refC = (i + 2*numeroPaginasNecesariasPorMatriz) + "," + desplazamiento;
+
+                            String valor = "[A-" + filaActual + "-" + k + "]"  
+                                                + "," + refA + "\n" 
+                                                + "[B-" + filaActual + "-" + k + "]"
+                                                + "," + refB + "\n" 
+                                                + "[C-" + filaActual + "-" + k + "]"
+                                                + "," + refC + "\n";
+
+                            referencias += valor;
+                            desplazamiento += tamanoEntero;
+
+                            numeroReferencias += 3;
+
+                        }
+                        filaActual++;
+                        
+                    }
+                }
+                tablaPaginas = new TablaPaginas(numeroPaginasNecesariasPorMatriz * 3);
+        }
+
+       
+
+        resultado += "NR = " + numeroReferencias + "\n";
 
         String resultadoFinal = resultado + referencias;
 
@@ -124,7 +207,8 @@ public class Main {
         System.out.println("Tamano de pagina: " + tamanoPagina);
         System.out.println("Numero de paginas: " + numeroPaginas);
         System.out.println("Tamano de entero: " + tamanoEntero + "\n");
-
+        System.out.println("Numero de referencias: " + numeroReferencias + "\n");
+        
 
 
         return resultadoFinal;
@@ -190,11 +274,9 @@ public class Main {
 
       
 
-            String resultado = "NF = " + numeroFilas + "\n" 
-                             + "NC = " + numeroColumnas + "\n" 
-                             + "TP = " + tamanoPagina + "\n" 
-                             + "MP = " + numeroPaginas + "\n" 
-                             + "TE = " + tamanoEntero + "\n";
+            String resultado = "TP = " + tamanoPagina + "\n" 
+                             + "NF = " + numeroFilas + "\n"  
+                             + "NC = " + numeroColumnas + "\n" ;
                              
             scanner.close();
 
