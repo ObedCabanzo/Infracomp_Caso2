@@ -35,6 +35,7 @@ public class Main {
 
         System.out.println("Ingresa la ruta del archivo input: \n(Ruta de archivo por defecto: src/input/input.txt)  \n");
         String ruta = scanner.nextLine();
+        
         System.out.println("\n\nSeleccione el modo de ejecución: \n 1. Modo 1 \n 2. Modo 2 \n");
         modo = scanner.nextInt();
         scanner.close();
@@ -83,8 +84,8 @@ public class Main {
 
         int filaActual = 0;
 
-
-        if (filasEnUnaPagina >= numeroFilas*3) {      // Cuando todas las matrices caben en una pagina 
+        // Cuando todas las matrices caben en una pagina 
+        if (filasEnUnaPagina >= numeroFilas*3) {    
             filasEnUnaPagina = numeroFilas;
 
             int desplazamiento = 0;
@@ -117,8 +118,9 @@ public class Main {
             tablaPaginas = new TablaPaginas(2);
             
         }
-
-        else if (filasEnUnaPagina >= numeroFilas*2) {      // Cuanto dos matrices caben en una pagina 
+        
+        // Cuanto dos matrices caben en una pagina 
+        else if (filasEnUnaPagina >= numeroFilas*2) {      
             numeroPaginasNecesariasPorMatriz = 1;
             filasEnUnaPagina = numeroFilas;
 
